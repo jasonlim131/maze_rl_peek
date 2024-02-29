@@ -1,12 +1,24 @@
+import sys
+import os
+print("Python Version:", sys.version)
+print("Python Executable:", sys.executable)
+print("Current Working Directory:", os.getcwd())
+
+
+
 from typing import List, Tuple, Dict, Union, Optional, Callable
 import re
 from collections import defaultdict
 import pickle
-import funcy as fn
+# import funcy as fn
 
 import numpy as np
+print("Numpy Version:", np.__version__)
+
 import pandas as pd
 import torch as t
+print("Pytorch Version:", t.__version__)
+
 import math
 
 import plotly.express as px
@@ -28,8 +40,18 @@ plt.rcParams["figure.dpi"] = 140
 import circrl.module_hook as cmh
 import circrl.rollouts as cro
 
-import procgen_tools.models as models
-import procgen_tools.utils as utils
+import sys
+
+# Add the procgen_tools directory to sys.path
+procgen_tools_path = "/Users/crayhippo/procgen-tools/procgen_tools"
+sys.path.append(procgen_tools_path)
+procgen_path = "/Users/crayhippo/procgen-tools/procgen"
+sys.path.append(procgen_path)
+
+import models
+import utils
+print("procgen_path", procgen_path)
+
 from procgen import ProcgenGym3Env
 
 import os, sys
@@ -49,11 +71,15 @@ except NameError:
     in_jupyter = False
 # PATH_PREFIX = '../' if in_jupyter else ''
 
+print("current working directory:", os.getcwd())
 
 def load_model(rand_region: int = 5, num_actions: int = 15, use_small: bool = False):
     """Load a model from the trained_models folder. Returns the policy and the hook."""
     model_name = "maze_i" if use_small else f"maze_I/model_rand_region_{rand_region}"
-    model_stub = f"trained_models/{model_name}.pth"
+    model_stub = f"/Users/crayhippo/procgen-tools/procgen_tools/trained_models/{model_name}.pth"
+
+    if not os.path.isfile(model_stub):
+        raise FileNotFoundError(f"Model file not found: {model_stub}")
 
     try:
         utils.cd_into_procgen_tools()

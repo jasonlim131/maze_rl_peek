@@ -1,20 +1,32 @@
 # %%
-%reload_ext autoreload
-%autoreload 2
+# %reload_ext autoreload
+# %autoreload 2
+#make sure cwd is the script folder when you run this
+
+
+import os
+print(os.getcwd())
+import sys
+
+sys.path.append(os.path.dirname(os.getcwd()))
+
+# # %%
+# try:
+#     import procgen_tools
+# except ImportError:
+#     get_ipython().run_line_magic(magic_name='pip', line='install -U git+https://github.com/ulissemini/procgen-tools')
+
+# import setup
+
+# setup(dl_data=False) # create directory structure and download data 
 
 # %%
-try:
-    import procgen_tools
-except ImportError:
-    get_ipython().run_line_magic(magic_name='pip', line='install -U git+https://github.com/ulissemini/procgen-tools')
-
-from procgen_tools.utils import setup
-
-setup(dl_data=False) # create directory structure and download data 
-
-# %%
+from procgen_tools.visualization import *
+from procgen_tools.maze import *
+from procgen_tools.vfield import *
 from procgen_tools.imports import *
-from procgen_tools import visualization, patch_utils, maze, vfield
+from procgen_tools.patch_utils import *
+# from procgen_tools import maze, vfield, imports, patch_utils, visualization
 
 # %% Generate vfields for randomly generated seeds
 AX_SIZE = 4
@@ -44,6 +56,7 @@ def generate_plots(max_size : int = 18, min_size : int = 3, cols : int = 2, rows
         venv = maze.create_venv(num=1, start_level=seed, num_levels=1)
         if show_vfield:
             vf = vfield.vector_field(venv, policy=hook.network)
+            
             vfield.plot_vf(vf, ax=ax, show_components=checkbox.value, render_padding = False)
         else:
             visualization.visualize_venv(venv, mode='human', idx=0, ax=ax, show_plot=False, render_padding=False, render_mouse=False)
