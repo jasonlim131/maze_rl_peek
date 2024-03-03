@@ -55,11 +55,10 @@ def generate_plots(max_size : int = 18, min_size : int = 3, cols : int = 2, rows
         seed = maze.rand_seed_with_size(min_size=min_size, max_size=max_size) 
         venv = maze.create_venv(num=1, start_level=seed, num_levels=1)
         if show_vfield:
-            vf = vfield.vector_field(venv, policy=hook.network)
-            
-            vfield.plot_vf(vf, ax=ax, show_components=checkbox.value, render_padding = False)
+            vf = vector_field(venv, policy=hook.network)
+            plot_vf(vf, ax=ax, show_components=checkbox.value, render_padding = False)
         else:
-            visualization.visualize_venv(venv, mode='human', idx=0, ax=ax, show_plot=False, render_padding=False, render_mouse=False)
+            visualize_venv(venv, mode='human', idx=0, ax=ax, show_plot=False, render_padding=False, render_mouse=False)
         ax.set_title(f'Seed: {seed:,}')
         ax.axis('off')  
 
