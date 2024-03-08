@@ -3,7 +3,13 @@ from procgen_tools import maze
 from typing import List, Tuple
 from functools import cache
 import numpy as np
-from procgen import ProcgenGym3Env
+import os
+
+#add parent directory to system path
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from procgen.procgen.env import ProcgenGym3Env
+
 import pickle
 
 class Episode():

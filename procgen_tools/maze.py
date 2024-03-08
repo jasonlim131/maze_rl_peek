@@ -23,7 +23,11 @@ from tqdm.auto import tqdm
 from ipywidgets import GridspecLayout, Button, Layout, HBox, Output
 from IPython.display import display
 
-from procgen import ProcgenGym3Env
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from procgen.procgen.env import ProcgenGym3Env
+
+
 from procgen_tools import models
 
 # Constants in numeric maze representation
@@ -1257,7 +1261,7 @@ def wrap_venv(venv) -> ToBaselinesVecEnv:
     return venv  # type: ignore - ToBaselinesVecEnv gives best type annotations
 
 
-from procgen import ProcgenGym3Env
+from procgen.procgen.env import ProcgenGym3Env
 
 
 def create_venv(

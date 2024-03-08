@@ -1293,7 +1293,7 @@ def plot_vf(
     ax=None,
     human_render: bool = True,
     render_padding: bool = False,
-    show_components: bool = False,
+    show_components: bool= False,
 ):
     "Plot the vector field given by vf. If human_render is true, plot the human view instead of the raw grid np.ndarray."
     render_arrows(

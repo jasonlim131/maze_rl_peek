@@ -1,8 +1,8 @@
 import sys
 import os
-print("Python Version:", sys.version)
-print("Python Executable:", sys.executable)
-print("Current Working Directory:", os.getcwd())
+# print("Python Version:", sys.version)
+# print("Python Executable:", sys.executable)
+# print("Current Working Directory:", os.getcwd())
 
 
 
@@ -52,7 +52,10 @@ import models
 import utils
 print("procgen_path", procgen_path)
 
-from procgen import ProcgenGym3Env
+
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from procgen.procgen.env import ProcgenGym3Env
 
 import os, sys
 from glob import glob

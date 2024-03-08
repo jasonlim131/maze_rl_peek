@@ -1,38 +1,33 @@
 # %% [markdown]
 # This notebook is for taking statistics over thousands of runs, in order to analyze which maze features (e.g. distance to cheese) tend to affect decision-making. 
+import os
+import sys
 
-# %%
-%load_ext autoreload
-%autoreload 2
-# %%
-try:
-    import procgen_tools
-except ImportError:
-    get_ipython().run_line_magic(magic_name='pip', line='install -U git+https://github.com/ulissemini/procgen-tools')
+# Adjust sys.path to include the directory above experiments, which is procgen-tools
+# This allows importing modules from procgen-tools and its subdirectories
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
 
-from procgen_tools.utils import setup
+# Import setup from the utils package
+import setup
 
-setup() # create directory structure and download data 
+# Now you can call setup() function as needed
+setup()
 
-# %%
-%matplotlib inline
+# Import other necessary modules
 import matplotlib.pyplot as plt
-
 import numpy as np
 from procgen import ProcgenGym3Env
-from procgen_tools import maze
+from procgen_tools.maze import *
 from procgen_tools.models import load_policy
-from procgen_tools.metrics import metrics, decision_square 
+from procgen_tools.metrics import metrics, decision_square
 from procgen_tools.data_utils import load_episode
-from data_util import load_episode
 
 from IPython import display
 from glob import glob
 import pickle
-from tqdm import tqdm
-
-import os
-from collections import defaultdict
+import tqdm
 
 import pandas as pd
 from sklearn import linear_model
@@ -42,8 +37,10 @@ from sklearn.preprocessing import StandardScaler
 from scipy import stats
 from sklearn.model_selection import train_test_split
 
-import random 
+import random
 from typing import List, Tuple, Any, Dict, Union, Optional
+
+# Rest of your script...
 
 import prettytable 
 
@@ -138,7 +135,7 @@ from ipywidgets import Dropdown, Checkbox
 
 scatter_distances_fig = go.FigureWidget()
 
-# Make plotly scatterplot comparing two metrics, to check for collinearity
+# Make plotly scatterplot `com`paring two metrics, to check for collinearity
 @interact
 def show_scatter(metric1=Dropdown(options=list(filtered_rm.keys()), value='euc_dist_cheese_decision_square'), 
                  metric2=Dropdown(options=list(filtered_rm.keys()), value='steps_between_cheese_decision_square'),
