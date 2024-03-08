@@ -42,7 +42,10 @@ import circrl.rollouts as cro
 
 import procgen_tools.models as models
 import procgen_tools.utils as utils
-from procgen import ProcgenGym3Env
+
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from procgen.procgen.env import ProcgenGym3Env
 
 import os, sys
 from glob import glob
