@@ -40,22 +40,9 @@ plt.rcParams["figure.dpi"] = 140
 import circrl.module_hook as cmh
 import circrl.rollouts as cro
 
-import sys
-
-# Add the procgen_tools directory to sys.path
-procgen_tools_path = "/Users/crayhippo/procgen-tools/procgen_tools"
-sys.path.append(procgen_tools_path)
-procgen_path = "/Users/crayhippo/procgen-tools/procgen"
-sys.path.append(procgen_path)
-
-import models
-import utils
-print("procgen_path", procgen_path)
-
-
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-from procgen.procgen.env import ProcgenGym3Env
+import procgen_tools.models as models
+import procgen_tools.utils as utils
+from procgen import ProcgenGym3Env
 
 import os, sys
 from glob import glob
