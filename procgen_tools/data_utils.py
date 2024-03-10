@@ -80,6 +80,28 @@ class Episode():
             object.__setattr__(self, k, v)
         self.assert_valid()
 
+    @classmethod
+    def load_episode(file: str, load_venv=False) -> Episode:
+        """
+        Load an episode from a file, optionally load the venv, allowing us to reconstruct the high-def
+        image of the maze (stored in run["start_info"]["rgb"])
+        (Disabled by default for speed, since it requires creating a venv)
+        """
+        episode = torch.load(file)
+    
+        if load_venv:
+            venv = ProcgenGym3Env(
+                num=1, env_name='maze', num_levels=1, start_level=episode.level_seed,
+                distribution_mode='hard', render_mode='rgb_array'
+            )
+            venv = maze.wrap_venv(venv)
+            info = venv.env.get_info()[0]
+            # TODO: Also check that level seed matches what is stored in episode.state_vals
+            assert episode.level_seed == info["level_seed"], 'level seed doesnt match created env'
+            episode['start_info'] = info    
+        return episode
+
+
     @property
     @cache
     def state_vals(self):
@@ -109,25 +131,26 @@ class Episode():
         g = self.grid(t=-1)
         return (np.abs(np.array(maze.get_mouse_pos(g)) - np.array(maze.get_cheese_pos(g))).sum() == 1.).all()
 
+    
 
-def load_episode(file: str, load_venv=False) -> Episode:
-    """
-    Load an episode from a file, optionally load the venv, allowing us to reconstruct the high-def
-    image of the maze (stored in run["start_info"]["rgb"])
-    (Disabled by default for speed, since it requires creating a venv)
-    """
-    with open(file, 'rb') as f:
-        episode: Episode = pickle.load(f)
+# def load_episode(file: str, load_venv=False) -> Episode:
+#     """
+#     Load an episode from a file, optionally load the venv, allowing us to reconstruct the high-def
+#     image of the maze (stored in run["start_info"]["rgb"])
+#     (Disabled by default for speed, since it requires creating a venv)
+#     """
+#     with open(file, 'rb') as f:
+#         episode: Episode = pickle.load(f)
 
-    if load_venv:
-        venv = ProcgenGym3Env(
-            num=1, env_name='maze', num_levels=1, start_level=episode.level_seed,
-            distribution_mode='hard', render_mode='rgb_array'
-        )
-        venv = maze.wrap_venv(venv)
-        info = venv.env.get_info()[0]
-        # TODO: Also check that level seed matches what is stored in episode.state_vals
-        assert episode.level_seed == info["level_seed"], 'level seed doesnt match created env'
-        episode['start_info'] = info
+#     if load_venv:
+#         venv = ProcgenGym3Env(
+#             num=1, env_name='maze', num_levels=1, start_level=episode.level_seed,
+#             distribution_mode='hard', render_mode='rgb_array'
+#         )
+#         venv = maze.wrap_venv(venv)
+#         info = venv.env.get_info()[0]
+#         # TODO: Also check that level seed matches what is stored in episode.state_vals
+#         assert episode.level_seed == info["level_seed"], 'level seed doesnt match created env'
+#         episode['start_info'] = info
 
-    return episode
+#     return episode
